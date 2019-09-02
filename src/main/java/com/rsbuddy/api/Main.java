@@ -1,8 +1,8 @@
-package com.rsbuddy.counters;
+package com.rsbuddy.api;
 
 import java.net.InetSocketAddress;
 
-import com.rsbuddy.counters.db.LettuceManager;
+import com.rsbuddy.api.db.LettuceManager;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
@@ -41,10 +41,11 @@ public class Main {
 
     static Server newServer(Config config) throws Exception {
         LettuceManager lettuceManager = new LettuceManager(config.getConfig("redis"));
+        CountersServiceImpl counters = new CountersServiceImpl(lettuceManager, config);
         ServerBuilder builder = new ServerBuilder()
                 .http(config.getInt("httpPort"))
                 .service(new GrpcServiceBuilder()
-                        .addService(new CountersServiceImpl(lettuceManager, config))
+                        .addService(counters)
                         // See https://github.com/grpc/grpc-java/blob/master/documentation/server-reflection-tutorial.md
                         .addService(ProtoReflectionService.newInstance())
                         .supportedSerializationFormats(GrpcSerializationFormats.values())

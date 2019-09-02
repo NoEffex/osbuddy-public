@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option java_package = "com.rsbuddy.api.protos";
+
+service CountersService {
+    rpc QueryKillCount (QueryKillCountRequest) returns (QueryKillCountResponse) {}
+    rpc PutKillCount (PutKillCountRequest) returns (PutKillCountResponse) {}
+    rpc QueryPersonalBest (QueryPersonalBestRequest) returns (QueryPersonalBestResponse) {}
+    rpc PutPersonalBest (PutPersonalBestRequest) returns (PutPersonalBestResponse) {}
+    rpc QueryTask (QueryTaskRequest) returns (QueryTaskResponse) {}
+    rpc PutTask (PutTaskRequest) returns (PutTaskResponse) {}
+}
+
+message QueryKillCountRequest {
+    string boss = 1;
+    string displayName = 2;
+}
+
+message QueryKillCountResponse {
+    bool success = 1;
+    int32 count = 2;
+}
+
+message PutKillCountRequest {
+    string boss = 1;
+    string displayName = 2;
+    int32 count = 3;
+}
+
+message PutKillCountResponse {
+    bool success = 1;
+}
+
+message QueryPersonalBestRequest {
+    string boss = 1;
+    string displayName = 2;
+}
+
+message QueryPersonalBestResponse {
+    bool success = 1;
+    int32 time = 2;
+}
+
+message PutPersonalBestRequest {
+    string boss = 1;
+    string displayName = 2;
+    int32 time = 3;
+}
+
+message PutPersonalBestResponse {
+    bool success = 1;
+}
+
+message Task {
+    string monster = 1;
+    string area = 2;
+    int32 current = 3;
+    int32 max = 4;
+}
+
+message QueryTaskRequest {
+    string displayName = 1;
+}
+
+message QueryTaskResponse {
+    bool success = 1;
+    Task task = 2;
+}
+
+message PutTaskRequest {
+    string displayName = 1;
+    Task task = 2;
+}
+
+message PutTaskResponse {
+    bool success = 1;
+}

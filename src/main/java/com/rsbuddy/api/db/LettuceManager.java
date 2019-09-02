@@ -1,4 +1,4 @@
-package com.rsbuddy.counters.db;
+package com.rsbuddy.api.db;
 
 import com.typesafe.config.Config;
 import io.lettuce.core.RedisClient;

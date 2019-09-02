@@ -1,1 +1,1 @@
-include 'counters'
+rootProject.name = 'public-api'
