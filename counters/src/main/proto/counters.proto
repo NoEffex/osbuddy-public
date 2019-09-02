@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package com.rsbuddy.counters.protos;
+option java_package = "com.rsbuddy.counters.protos";
+
+service CountersService {
+    rpc QueryKillCount (QueryKillCountRequest) returns (QueryKillCountResponse) {}
+    rpc PutKillCount (PutKillCountRequest) returns (PutKillCountResponse) {}
+}
+
+message QueryKillCountRequest {
+    string boss = 1;
+    string displayName = 2;
+}
+
+message QueryKillCountResponse {
+    bool success = 1;
+    int32 count = 2;
+}
+
+message PutKillCountRequest {
+    string boss = 1;
+    string displayName = 2;
+    int32 count = 3;
+}
+
+message PutKillCountResponse {
+    bool success = 1;
+}

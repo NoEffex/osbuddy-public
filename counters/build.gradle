@@ -1,0 +1,75 @@
+buildscript {
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
+    }
+}
+plugins {
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'application'
+
+group 'com.rsbuddy.services'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClassName = 'com.rsbuddy.services.account.Main'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.netty:netty-bom:" + nettyVersion
+        mavenBom "com.linecorp.armeria:armeria-bom:" + armeriaVersion
+    }
+}
+
+protobuf {
+    // Configure the protoc executable.
+    protoc {
+        // Download from the repository.
+        artifact = "com.google.protobuf:protoc:" + protocVersion
+    }
+
+    // Locate the codegen plugins.
+    plugins {
+        // Locate a plugin with name 'grpc'.
+        grpc {
+            // Download from the repository.
+            artifact = "io.grpc:protoc-gen-grpc-java:" + grpcVersion
+        }
+    }
+    generateProtoTasks {
+        ofSourceSet('main')*.plugins {
+            grpc {}
+        }
+    }
+}
+
+dependencies {
+    compile group: 'com.linecorp.armeria', name: 'armeria', version: armeriaVersion
+    compile group: 'com.linecorp.armeria', name: 'armeria-grpc', version: armeriaVersion
+    compile group: 'io.projectreactor', name: 'reactor-core', version: reactorVersion
+    compile group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: jakartaVersion
+    compile group: 'com.typesafe', name: 'config', version: typesafeConfigVersion
+
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: logbackVersion
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: logstashEncoderVersion
+
+    // redis
+    compile group: 'io.lettuce', name: 'lettuce-core', version: lettuceVersion
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    options.encoding = 'UTF-8'
+    options.debug = true
+    options.compilerArgs += '-parameters'
+}
